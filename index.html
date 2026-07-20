@@ -124,6 +124,42 @@ label.f{display:block;font-size:14px;font-weight:600;letter-spacing:-.224px;colo
 .mile.now .t{color:#fff;font-weight:600}
 .mile.future .num,.mile.future .t{color:#8a8a8e}
 
+/* ── 욕구 내비게이터 ── 고르는 순간 세계가 그 색으로 물든다 ── */
+#urge{position:fixed;inset:0;z-index:99;display:none;flex-direction:column;align-items:center;
+  background:var(--canvas);color:var(--ink);overflow-y:auto;
+  padding:56px var(--s-lg) calc(var(--s-lg) + env(safe-area-inset-bottom));text-align:center;
+  transition:background-color .9s var(--ease,ease-out)}
+#urge.on{display:flex}
+#urgeHead{font-family:"SF Pro Display",system-ui,-apple-system,sans-serif;font-size:28px;font-weight:600;
+  line-height:1.2;letter-spacing:-.4px;max-width:16ch}
+#urgeSub{font-size:17px;letter-spacing:-.374px;color:var(--ink-48);margin-top:var(--s-xs);max-width:26ch}
+/* 라벨이 원 밖 22px에 놓이므로 stage 위아래로 숨 쉴 공간을 두고,
+   좁은 화면에서 좌우 라벨이 잘리지 않도록 휠 자체가 화면 폭을 따라 줄어든다 */
+#urgeStage{position:relative;width:min(300px,calc(100vw - 88px));aspect-ratio:1;
+  margin:52px auto 46px;flex:none}
+#urgeCv{width:100%;height:100%;display:block;border-radius:50%}
+#urgeHint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;transition:opacity .4s ease}
+#urgeHint span{background:rgba(29,29,31,.62);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  color:#fff;font-size:15px;letter-spacing:-.2px;line-height:1.45;padding:12px 18px;border-radius:var(--r-md);max-width:210px}
+#urge.picked #urgeHint{opacity:0}
+#urgeDot{position:absolute;width:26px;height:26px;border-radius:50%;border:3px solid #fff;
+  box-shadow:rgba(0,0,0,.22) 0 2px 10px;display:none;transform:translate(-50%,-50%);pointer-events:none;
+  transition:left .35s var(--ease,ease-out),top .35s var(--ease,ease-out)}
+#urge.picked #urgeDot{display:block}
+.umode{position:absolute;font-size:12px;line-height:1.25;letter-spacing:-.12px;color:var(--ink-48);
+  white-space:nowrap;opacity:0;transition:opacity .5s ease;pointer-events:none;transform:translate(-50%,-50%)}
+#urge.picked .umode{opacity:1}
+.umode.sel{color:var(--ink);font-weight:600}
+#urgeName{font-family:"SF Pro Display",system-ui,-apple-system,sans-serif;font-size:34px;font-weight:600;
+  letter-spacing:-.5px;margin-top:var(--s-sm);min-height:1.2em}
+#urgeSay{font-size:17px;line-height:1.55;letter-spacing:-.374px;color:var(--ink-80);
+  max-width:30ch;margin:var(--s-sm) auto 0;min-height:3.2em}
+#urgeBtns{width:100%;max-width:340px;margin-top:auto;padding-top:var(--s-lg);
+  display:flex;flex-direction:column;gap:var(--s-sm)}
+#urgeGo{opacity:.35;pointer-events:none;transition:opacity .4s ease}
+#urge.picked #urgeGo{opacity:1;pointer-events:auto}
+
 /* ── SOS 오버레이 ── */
 #sos{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;align-items:center;
   background:var(--black);color:#fff;padding:56px var(--s-lg) calc(var(--s-lg) + env(safe-area-inset-bottom));
@@ -314,6 +350,23 @@ input[type=range]{flex:1;accent-color:var(--primary);height:44px}
     </div>
   </section>
 
+  <!-- ═══════════ 욕구 내비게이터 ═══════════ -->
+  <div id="urge">
+    <h2 id="urgeHead">지금 이 마음은<br>어디쯤인가요.</h2>
+    <p id="urgeSub">담배가 당기는 마음에도 결이 있습니다. 짚어두면 한 발 물러설 수 있습니다.</p>
+    <div id="urgeStage">
+      <canvas id="urgeCv" width="600" height="600"></canvas>
+      <div id="urgeHint"><span>원 안을 눌러<br>지금 감각을 골라주세요</span></div>
+      <div id="urgeDot"></div>
+    </div>
+    <div id="urgeName"></div>
+    <p id="urgeSay"></p>
+    <div id="urgeBtns">
+      <button class="btn block" id="urgeGo" onclick="urgeGo()">3분, 버텨보겠습니다</button>
+      <button class="btn block ghost" onclick="urgeSkip()">건너뛰고 바로 SOS</button>
+    </div>
+  </div>
+
   <!-- ═══════════ SOS ═══════════ -->
   <div id="sos">
     <p class="caption muted-d">이 파도, 3분이면 지나갑니다</p>
@@ -361,7 +414,7 @@ input[type=range]{flex:1;accent-color:var(--primary);height:44px}
   <button class="tab" id="tabRecord" onclick="go('record')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M4 15l5-5 4 3.5L20 6"/></svg></span>기록</button>
   <button class="tab" id="tabSettings" onclick="go('settings')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11M18.5 7H21M3 17h5M12.5 17H21"/><circle cx="16" cy="7" r="2.4"/><circle cx="10" cy="17" r="2.4"/></svg></span>설정</button>
 </nav>
-<button id="fab" onclick="sosOpen()">SOS</button>
+<button id="fab" onclick="urgeOpen()">SOS</button>
 
 <script>
 /* ══ 후원 계좌 설정 — 여기만 채우면 됩니다 ══
@@ -519,6 +572,105 @@ function renderHome(){
     el.appendChild(div)});
 }
 
+/* ── 욕구 내비게이터 ──
+   각도 0°=위(각성) 90°=오른쪽(유쾌) 180°=아래(침착) 270°=왼쪽(불쾌).
+   욕구에 이름을 붙이면 자동반응이 끊기고 관찰 대상이 된다(인지적 탈융합). */
+const UMODES=[
+ {a:0,  t:'곤두섬',  s:'지금 필요한 건 니코틴이 아니라 숨입니다. 4초 들이쉬고 6초 내쉬어보세요.'},
+ {a:45, t:'들뜸',    s:'기분 좋을 때 피우는 한 대가 가장 위험합니다. 이 기분은 이미 담배 없이 온 겁니다.'},
+ {a:90, t:'여유',    s:'식후나 커피의 습관입니다. 자리를 옮기면 신호가 끊깁니다.'},
+ {a:135,t:'나른함',  s:'몸이 쉬라는 신호입니다. 담배 말고 물 한 잔, 그리고 창문.'},
+ {a:180,t:'멍함',    s:'지루함은 니코틴이 아니라 움직임으로 풀립니다. 3분만 걸어보세요.'},
+ {a:225,t:'무기력',  s:'니코틴은 기분을 올리지 않습니다. 금단으로 떨어진 걸 잠깐 메울 뿐입니다.'},
+ {a:270,t:'답답함',  s:'답답한 건 상황이지 니코틴 부족이 아닙니다. 담배는 상황을 바꾸지 못합니다.'},
+ {a:315,t:'초조함',  s:'이 초조함의 절반은 금단입니다. 72시간을 넘기면 파도가 잦아듭니다.'}];
+
+let urgeSel=null;
+function urgeOpen(){
+  urgeSel=null;
+  const el=document.getElementById('urge');
+  el.classList.remove('picked');
+  el.style.backgroundColor='';
+  document.getElementById('urgeName').textContent='';
+  document.getElementById('urgeSay').textContent='';
+  document.getElementById('urgeDot').style.display='';
+  el.classList.add('on');
+  drawUrge(false);
+  layoutModes();
+}
+function layoutModes(){
+  const stage=document.getElementById('urgeStage');
+  stage.querySelectorAll('.umode').forEach(n=>n.remove());
+  const half=stage.clientWidth/2, R=half+22;
+  UMODES.forEach(m=>{
+    const rad=(m.a-90)*Math.PI/180;
+    const d=document.createElement('div');
+    d.className='umode';d.dataset.a=m.a;
+    d.style.left=(half+Math.cos(rad)*R)+'px';
+    d.style.top=(half+Math.sin(rad)*R)+'px';
+    d.innerHTML=m.t+'<br>모드';
+    stage.appendChild(d);
+  });
+}
+function drawUrge(picked){
+  const cv=document.getElementById('urgeCv'),ctx=cv.getContext('2d'),R=300;
+  ctx.clearRect(0,0,600,600);
+  if(!picked){
+    for(let a=0;a<360;a+=2){
+      const rad=(a-90)*Math.PI/180;
+      ctx.beginPath();ctx.moveTo(R,R);ctx.arc(R,R,R-2,rad,rad+2.2*Math.PI/180);ctx.closePath();
+      ctx.fillStyle=`hsl(${hueAt(a)} 62% 64%)`;ctx.fill()}
+    const g=ctx.createRadialGradient(R,R,0,R,R,R);
+    g.addColorStop(0,'rgba(255,255,255,.92)');g.addColorStop(.5,'rgba(255,255,255,.45)');g.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(R,R,R-2,0,7);ctx.fill();
+    return;
+  }
+  // 고른 뒤: 테두리 링만 남고 안쪽은 옅어진다 — 화면이 조용해지는 순간
+  ctx.beginPath();ctx.arc(R,R,R-16,0,7);ctx.fillStyle='rgba(255,255,255,.72)';ctx.fill();
+  for(let a=0;a<360;a+=2){
+    const rad=(a-90)*Math.PI/180;
+    ctx.beginPath();ctx.arc(R,R,R-9,rad,rad+2.4*Math.PI/180);
+    ctx.strokeStyle=`hsl(${hueAt(a)} 70% 58%)`;ctx.lineWidth=13;ctx.stroke()}
+  ctx.strokeStyle='rgba(29,29,31,.07)';ctx.lineWidth=2;
+  for(let i=0;i<4;i++){const rad=i*Math.PI/4;
+    ctx.beginPath();
+    ctx.moveTo(R-Math.cos(rad)*(R-20),R-Math.sin(rad)*(R-20));
+    ctx.lineTo(R+Math.cos(rad)*(R-20),R+Math.sin(rad)*(R-20));ctx.stroke()}
+}
+function urgePick(x,y){
+  const half=document.getElementById('urgeStage').clientWidth/2;
+  const dx=(x-half)/half, dy=(y-half)/half;
+  if(dx*dx+dy*dy>1)return;
+  let ang=Math.atan2(dx,-dy)*180/Math.PI; if(ang<0)ang+=360;
+  const m=UMODES.reduce((b,c)=>{
+    const d=a=>Math.min(Math.abs(a-ang),360-Math.abs(a-ang));
+    return d(c.a)<d(b.a)?c:b});
+  urgeSel={v:+dx.toFixed(2),a:+(-dy).toFixed(2),mode:m.t,ang:Math.round(ang)};
+
+  const el=document.getElementById('urge');
+  el.classList.add('picked');
+  drawUrge(true);
+  const dot=document.getElementById('urgeDot');
+  dot.style.left=x+'px';dot.style.top=y+'px';
+  dot.style.background=`hsl(${hueAt(ang)} 66% 56%)`;
+  el.style.backgroundColor=`hsl(${hueAt(ang)} 62% 96%)`;   // 세계가 그 색으로 물든다
+  document.getElementById('urgeName').textContent=m.t+' 모드';
+  document.getElementById('urgeSay').textContent=m.s;
+  el.querySelectorAll('.umode').forEach(n=>n.classList.toggle('sel',+n.dataset.a===m.a));
+}
+/* 모드는 여기서 저장하지 않고 넘겨만 둔다 — 기록은 SOS가 끝날 때 한 줄로 남는다 */
+let pendingMode=null;
+function urgeGo(){
+  pendingMode=urgeSel?urgeSel.mode:null;
+  document.getElementById('urge').classList.remove('on');
+  sosOpen();
+}
+function urgeSkip(){
+  pendingMode=null;
+  document.getElementById('urge').classList.remove('on');
+  sosOpen();
+}
+
 /* ── SOS ── */
 let sosTimerId=null,sosLeft=180,quoteId=null,breathId=null;
 function sosOpen(){
@@ -547,12 +699,12 @@ function tickSos(){
   T.textContent=Math.floor(sosLeft/60)+':'+String(sosLeft%60).padStart(2,'0');
 }
 function sosRestart(){
-  S.sos.push({t:Date.now(),passed:false});save();
+  S.sos.push({t:Date.now(),passed:false,mode:pendingMode});save();
   document.getElementById('sosPass').style.display='none';
   document.getElementById('sosMore').style.display='none';
   sosLeft=180;tickSos();clearInterval(sosTimerId);sosTimerId=setInterval(tickSos,1000);
 }
-function sosResult(passed){S.sos.push({t:Date.now(),passed});save();sosClose();
+function sosResult(passed){S.sos.push({t:Date.now(),passed,mode:pendingMode});save();sosClose();
   toast(passed?'파도를 넘었습니다':'기록했습니다')}
 function sosClose(){clearInterval(sosTimerId);clearInterval(quoteId);clearInterval(breathId);
   document.getElementById('sos').classList.remove('on','breathing')}
@@ -635,7 +787,7 @@ function renderHist(){
       div.innerHTML=`<span class="logdot" style="background:hsl(${hue} 58% 60%)"></span>
         <span class="txt">${x.e.memo||'감정 기록'} · 욕구 ${x.e.crav}</span><span class="when">${fmt(x.t)}</span>`}
     else if(x.type==='sos')div.innerHTML=`<span class="logdot" style="background:${x.s.passed?'#0066cc':'#c7c7cc'}"></span>
-        <span class="txt">SOS ${x.s.passed?'— 파도를 넘김':'— 버티는 중'}</span><span class="when">${fmt(x.t)}</span>`;
+        <span class="txt">SOS${x.s.mode?' · '+x.s.mode:''} ${x.s.passed?'— 파도를 넘김':'— 버티는 중'}</span><span class="when">${fmt(x.t)}</span>`;
     else div.innerHTML=`<span class="logdot" style="background:#1d1d1f"></span>
         <span class="txt">피웠어요${x.s.memo?' · '+x.s.memo:''}</span><span class="when">${fmt(x.t)}</span>`;
     list.appendChild(div)});
@@ -732,6 +884,11 @@ function donate(){
 function resetAll(){
   if(confirm('모든 기록이 삭제됩니다. 다시 설정할까요?')){localStorage.removeItem(LS);location.reload()}
 }
+
+document.getElementById('urgeCv').addEventListener('click',e=>{
+  const b=e.currentTarget.getBoundingClientRect();
+  urgePick(e.clientX-b.left,e.clientY-b.top);
+});
 
 function enterApp(){
   document.getElementById('tabbar').classList.add('on');
