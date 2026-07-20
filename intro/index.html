@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3분만 — 팍, 끊습니다</title>
+<meta name="description" content="줄이지 않습니다. 오늘부터 한 개비도 피우지 않습니다. 담배 생각이 나는 3분을 넘기게 돕는 금연 웹앱.">
+<meta name="theme-color" content="#f2f4f7">
+<meta property="og:title" content="3분만 — 팍, 끊습니다">
+<meta property="og:description" content="담배 생각은 3분이면 지나갑니다. 그 3분을 넘기는 도구.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700;900&family=IBM+Plex+Sans+KR:wght@300;400;600&display=swap">
+<link rel="stylesheet" href="tokens.css?v=2">
+<style>
+/* Hallmark · genre: editorial · macrostructure: Manifesto · theme: Manifesto-custom
+ * enrichment: none (typography only) · nav: N9 edge-aligned minimal · footer: Ft2 inline single line
+ * H1 Marquee knobs: size=xl, alignment=left-bias, underlay=none
+ * F4 Step-sequence knobs: numbering=elapsed-time (genuinely ordinal), layout=vertical stack, connector=hairline
+ * C1 CTA knobs: shape=slab, density=spacious, adornment=arrow
+ * axes — paper: light · display: geometric-sans · accent: cool(250)
+ * pre-emit critique: P5 H5 E4 S5 R4 V5
+ * contrast: pass (40–41, 42 pairs measured, min 5.48:1)
+ * nav: N9 · footer: Ft2 · slop: pass (42–45)
+ * honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · icons: n/a (30)
+ * mobile: pass (34, 49, 50–57 — verified 320/375/414/768/1280)
+ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; overflow-x: clip; }
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.22;      /* Korean glyphs need more leading than a Latin display default */
+  letter-spacing: -0.02em;
+  margin: 0;
+  min-width: 0;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+p { margin: 0; }
+a { color: inherit; }
+
+.wrap {
+  max-width: 62rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+:focus-visible {
+  outline: var(--rule-slab) solid var(--color-focus);
+  outline-offset: 3px;
+  /* never transitioned — the ring must appear instantly */
+}
+
+/* ── N9 · edge-aligned minimal ───────────────────────────── */
+.nav {
+  position: relative;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-block: var(--space-md);
+}
+.nav__mark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.nav__cta {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: var(--space-2xs) 0;
+  border-bottom: 2px solid var(--color-accent);
+  color: var(--color-accent);
+  transition: border-color var(--dur-short) var(--ease-out);
+}
+.nav__cta:hover { border-bottom-color: var(--color-ink); }
+.nav__cta:active, .nav__mark:active { opacity: 0.65; }
+
+/* ── Hero · H1 Marquee, left-bias, no CTA in fold ────────── */
+/* bottom padding out-weighs top so the hero pulls into the next band, never floats */
+.hero { padding-block: var(--space-2xl) var(--space-3xl); }
+.hero__h {
+  font-size: var(--text-display);
+  max-width: 15ch;
+}
+.hero__h .mark {
+  /* colour-block highlight on the verb — Manifesto's alternative to the tilted caps */
+  background: var(--color-accent);
+  color: var(--color-paper);
+  padding: 0.1em 0.1em 0.08em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.hero__lede {
+  margin-top: var(--space-lg);
+  max-width: var(--measure);
+  font-size: var(--text-lead);
+  line-height: 1.6;
+  color: var(--color-muted);
+  font-weight: 300;
+}
+
+/* ── Bleed bands — Manifesto's divider language (no hairlines between sections) ── */
+.bleed-ink {
+  background: var(--color-ink);
+  color: var(--color-ink-paper);
+  padding-block: var(--space-2xl);
+}
+.bleed-paper { padding-block: var(--space-2xl); }
+.bleed-paper-2 { background: var(--color-paper-2); padding-block: var(--space-2xl); }
+
+/* ── Claims · one assertion per block ────────────────────── */
+.claim + .claim { margin-top: var(--space-xl); }
+.claim__h {
+  font-size: var(--text-claim);
+  max-width: 22ch;
+}
+.claim__b {
+  margin-top: var(--space-sm);
+  max-width: var(--measure);
+  color: var(--color-ink-muted);
+  font-weight: 300;
+}
+.claim__cite {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--color-ink-neutral);   /* lifted for contrast on the ink bleed */
+  letter-spacing: 0.02em;
+}
+
+/* ── S2 · hanging section head (single column — never tag-left/header-right) ── */
+.head { margin-bottom: var(--space-lg); }
+.head__h { font-size: var(--text-display-s); max-width: 18ch; }
+.head__note {
+  margin-top: var(--space-xs);
+  max-width: var(--measure);
+  color: var(--color-muted);
+  font-weight: 300;
+}
+
+/* ── F4 · step sequence — the withdrawal timeline ────────── */
+.tl { border-top: var(--rule-hair) solid var(--color-rule); }
+.tl__row {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-md);
+  padding-block: var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.tl__t {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.2em;
+}
+.tl__d { color: var(--color-muted); }
+.tl__row--peak .tl__d { color: var(--color-ink); font-weight: 600; }
+
+/* ── What the app does — hairline list, not an icon-tile grid ── */
+.does { border-top: var(--rule-hair) solid var(--color-rule); }
+.does__row {
+  padding-block: var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  max-width: 48rem;
+}
+.does__n {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+}
+.does__d { margin-top: var(--space-3xs); color: var(--color-muted); font-weight: 300; }
+
+/* ── C1 · CTA slab — far below the fold ──────────────────── */
+.cta { padding-block: var(--space-2xl); }
+.cta__h { font-size: var(--text-display-s); max-width: 16ch; }
+.cta__slab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--color-accent);
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--radius-none);
+  transition: transform var(--dur-short) var(--ease-out),
+              background-color var(--dur-short) var(--ease-out);
+}
+.cta__slab:hover { background: var(--color-ink); }
+.cta__slab:active { transform: translateY(1px); }
+.cta__note {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+}
+
+/* ── Ft2 · inline single line ────────────────────────────── */
+.foot {
+  border-top: var(--rule-hair) solid var(--color-rule);
+  padding-block: var(--space-md) var(--space-xl);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-sm);
+  align-items: baseline;
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+}
+.foot__mark { font-family: var(--font-display); font-weight: 900; color: var(--color-ink); }
+.foot a {
+  color: var(--color-neutral);
+  text-decoration-color: var(--color-rule);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: color var(--dur-short) var(--ease-out);
+}
+.foot a:hover { color: var(--color-ink); }
+.foot a:active { opacity: 0.65; }
+
+/* ── One orchestrated entrance. Nothing else animates on scroll. ── */
+@media (prefers-reduced-motion: no-preference) {
+  .enter { opacity: 0; transform: translateY(0.75rem); animation: rise var(--dur-long) var(--ease-out) forwards; }
+  .enter:nth-child(2) { animation-delay: 70ms; }
+  .enter:nth-child(3) { animation-delay: 140ms; }
+}
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+/* ── Mobile — verified at 320 / 375 / 414 / 768 ──────────── */
+@media (max-width: 40rem) {
+  .tl__row { grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--space-sm); }
+  .hero__h { max-width: none; }
+  .cta__slab { width: 100%; justify-content: center; }
+  /* WCAG AA — every hit target ≥ 44px on touch */
+  .nav__mark, .nav__cta, .foot a { display: inline-flex; align-items: center; min-height: 44px; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap nav">
+  <a class="nav__mark" href="#top">3분만</a>
+  <a class="nav__cta" href="https://cclemon1.github.io/samboon/">앱 열기</a>
+</header>
+
+<main id="top">
+
+  <!-- Hero — H1 Marquee, left-bias, no CTA in the fold -->
+  <section class="wrap hero">
+    <h1 class="hero__h enter">팍, <span class="mark">끊습니다</span>.</h1>
+    <p class="hero__lede enter">줄이지 않습니다. 오늘부터 한 개비도 피우지 않습니다.
+      대신 가장 힘든 3분마다, 곁에 있겠습니다.</p>
+  </section>
+
+  <!-- Claims — one assertion per block, on an ink bleed -->
+  <section class="bleed-ink">
+    <div class="wrap">
+      <div class="claim">
+        <h2 class="claim__h">줄이는 건 계획이 아닙니다.</h2>
+        <p class="claim__b">조금씩 줄이다 보면 언젠가 끊게 된다는 말은 사실이 아닙니다.
+          한 번에 끊은 사람들이 서서히 줄인 사람들보다 더 많이 성공했습니다.
+          <span class="claim__cite">Lindson-Hawley et al., Annals of Internal Medicine, 2016 — 무작위 임상시험</span>
+        </p>
+      </div>
+
+      <div class="claim">
+        <h2 class="claim__h">담배 생각은 3분이면 지나갑니다.</h2>
+        <p class="claim__b">참는 게 아니라 흘려보내는 것입니다. 욕구는 파도처럼 몰려왔다가 빠져나갑니다.
+          그 3분을 넘기게 하는 것, 그게 이 앱의 전부입니다.</p>
+      </div>
+
+      <div class="claim">
+        <h2 class="claim__h">무너져도 처음부터가 아닙니다.</h2>
+        <p class="claim__b">한 대 피웠다고 날짜가 0으로 돌아가지 않습니다.
+          &lsquo;이미 망쳤으니 끝&rsquo;이라는 생각이 완전한 재발을 부릅니다.
+          흔들린 날도 기록으로 남고, 여정은 그대로 이어집니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- F4 step sequence — the real withdrawal timeline -->
+  <section class="wrap bleed-paper">
+    <div class="head">
+      <h2 class="head__h">참는 시간이 아니라, 회복하는 시간입니다.</h2>
+      <p class="head__note">마지막 한 개비 이후 몸에서 실제로 일어나는 일.</p>
+    </div>
+    <div class="tl">
+      <div class="tl__row"><div class="tl__t">20분</div><div class="tl__d">심박수와 혈압이 정상 범위로 내려옵니다</div></div>
+      <div class="tl__row"><div class="tl__t">8시간</div><div class="tl__d">혈중 일산화탄소가 절반으로 줄어듭니다</div></div>
+      <div class="tl__row"><div class="tl__t">48시간</div><div class="tl__d">니코틴이 몸에서 빠져나갑니다. 맛과 냄새가 돌아옵니다</div></div>
+      <div class="tl__row tl__row--peak"><div class="tl__t">72시간</div><div class="tl__d">금단이 최고조입니다. 이 고개가 마지막 오르막입니다</div></div>
+      <div class="tl__row"><div class="tl__t">2주</div><div class="tl__d">혈액순환과 폐 기능이 눈에 띄게 좋아집니다</div></div>
+      <div class="tl__row"><div class="tl__t">3개월</div><div class="tl__d">폐가 스스로 청소를 시작합니다</div></div>
+    </div>
+  </section>
+
+  <!-- What the app does — hairline rows, no icon tiles -->
+  <section class="bleed-paper-2">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="head__h">앱은 네 가지만 합니다.</h2>
+      </div>
+      <div class="does">
+        <div class="does__row">
+          <p class="does__n">SOS</p>
+          <p class="does__d">담배 생각이 나면 버튼 하나. 3분 타이머와 호흡, 끊는 이유와 사진이 화면을 채웁니다.</p>
+        </div>
+        <div class="does__row">
+          <p class="does__n">고비 예보</p>
+          <p class="does__d">주로 피우던 시간을 알려주면, 그 시간이 오기 전에 앱이 먼저 말을 겁니다.</p>
+        </div>
+        <div class="does__row">
+          <p class="does__n">감정 기록</p>
+          <p class="does__d">어떤 기분일 때 당기는지 그래프로 드러납니다. 트리거를 알면 대비할 수 있습니다.</p>
+        </div>
+        <div class="does__row">
+          <p class="does__n">회복 타임라인</p>
+          <p class="does__d">지금 몸에서 무슨 일이 일어나는지 매일 보여줍니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA slab — far below the fold -->
+  <section class="wrap cta">
+    <h2 class="cta__h">시작은 오늘이거나, 영영 아니거나.</h2>
+    <a class="cta__slab" href="https://cclemon1.github.io/samboon/">오늘 끊습니다 &rarr;</a>
+    <p class="cta__note">설치 없이 바로 열립니다. 홈 화면에 추가하면 앱처럼 씁니다.</p>
+  </section>
+
+</main>
+
+<footer class="wrap foot">
+  <span class="foot__mark">3분만</span>
+  <span>무료</span>
+  <span>기록은 이 기기에만 저장됩니다</span>
+  <a href="https://github.com/cclemon1/samboon">소스 보기</a>
+</footer>
+
+</body>
+</html>

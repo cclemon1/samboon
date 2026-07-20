@@ -1,0 +1,68 @@
+/* Hallmark · tokens · 3분만 landing
+ * genre: editorial · theme: Manifesto-custom
+ * axes — paper-band: light · display-style: geometric-sans · accent-hue: cool (250)
+ * Anchor hue 250 is carried over from the app's Action Blue so the two pages read as one brand.
+ */
+
+:root {
+  /* ── Colour ── paper/ink tinted toward the anchor hue; no pure #000 / #fff ── */
+  --color-paper:        oklch(97% 0.006 250);
+  --color-paper-2:      oklch(93% 0.008 250);
+  --color-rule:         oklch(84% 0.010 250);
+  --color-neutral:      oklch(50% 0.012 250);   /* 56% failed WCAG 4.5:1 at 14px on paper */
+  --color-muted:        oklch(42% 0.012 250);
+  --color-ink:          oklch(19% 0.014 250);
+  --color-accent:       oklch(48% 0.160 250);
+  --color-focus:        oklch(52% 0.180 250);
+
+  /* on dark bleed sections */
+  --color-ink-paper:    oklch(95% 0.006 250);
+  --color-ink-muted:    oklch(72% 0.012 250);
+  --color-ink-neutral:  oklch(66% 0.012 250);
+  --color-ink-rule:     oklch(34% 0.014 250);
+  --color-accent-lift:  oklch(72% 0.130 250);
+
+  /* ── Type ── display: geometric Korean sans · body: refined non-default sans ── */
+  --font-display: "Gothic A1", system-ui, sans-serif;
+  --font-body:    "IBM Plex Sans KR", system-ui, sans-serif;
+
+  --text-display:   clamp(3rem, 11vw, 6rem);
+  --text-display-s: clamp(1.875rem, 5.5vw, 3rem);
+  --text-claim:     clamp(1.5rem, 4vw, 2.25rem);
+  --text-lead:      clamp(1.125rem, 2.2vw, 1.5rem);
+  --text-body:      1.0625rem;   /* 17px — the app's reading pace */
+  --text-sm:        0.875rem;
+  --text-xs:        0.75rem;
+
+  /* ── Space ── 4pt scale ── */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+  --space-2xl: 6rem;
+  --space-3xl: 9rem;
+
+  /* ── Rule ── */
+  --rule-hair: 1px;
+  --rule-slab: 3px;
+
+  /* ── Radius ── austere: near-square ── */
+  --radius-none: 0px;
+  --radius-sm:   2px;
+
+  /* ── Motion ── */
+  --dur-short: 120ms;
+  --dur-base:  260ms;
+  --dur-long:  620ms;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ── Layout ── */
+  --measure: 34rem;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --z-nav: 10;
+}
