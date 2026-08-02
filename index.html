@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0066cc">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="3분만">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>3분만</title>
 <style>
 :root{
@@ -554,7 +559,7 @@ function renderHome(){
   const now=new Date(),curH=now.getHours()+now.getMinutes()/60;
   const myRisk=RISK_SLOTS.filter(s=>S.profile.risk.includes(s.k));
   const T=document.getElementById('riskTitle'),U=document.getElementById('riskSub');
-  if(!myRisk.length){T.textContent='설정 없음';U.textContent='욕구가 오면 언제든 SOS를 누르세요.'}
+  if(!myRisk.length){T.textContent='지금은 잔잔해요';U.textContent='담배 생각이 밀려오면 아래 SOS를 누르세요. 3분, 함께 넘깁니다.'}
   else{
     const next=myRisk.map(s=>({...s,diff:(s.h-curH+24)%24})).sort((a,b)=>a.diff-b.diff)[0];
     if(next.diff>23.5||next.diff<0.5){T.textContent='지금입니다';
@@ -777,7 +782,7 @@ function renderHist(){
   const all=[...S.emotions.map(e=>({t:e.t,type:'emo',e})),
     ...S.sos.map(s=>({t:s.t,type:'sos',s})),...S.slips.map(s=>({t:s.t,type:'slip',s}))]
     .sort((a,b)=>b.t-a.t).slice(0,30);
-  if(!all.length){list.innerHTML='<p class="caption muted">아직 기록이 없습니다</p>';return}
+  if(!all.length){list.innerHTML='<p class="caption muted">첫 기록을 남겨보세요. 오늘의 기분 한 번이면 시작입니다.</p>';return}
   const fmt=t=>{const d=new Date(t);return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+
     String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
   all.forEach(x=>{
