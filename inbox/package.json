@@ -1,0 +1,16 @@
+{
+  "name": "memo-inbox",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "현장 관찰·경영 메모 인박스 — 텔레그램에 던지면 노션 DB와 장부에 이중으로 쌓인다",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@vercel/blob": "^0.27.0"
+  },
+  "scripts": {
+    "test": "node --no-warnings --loader ./test/loader.mjs test/parse.test.mjs && node --no-warnings --loader ./test/loader.mjs test/webhook.test.mjs"
+  }
+}
